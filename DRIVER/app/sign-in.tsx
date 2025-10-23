@@ -9,6 +9,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import colors from './constraints/colors';
@@ -19,6 +20,10 @@ export default function SignInScreen() {
   const [password, setPassword] = useState('');
 
   const handleSignIn = () => {
+    if (!email.trim() || !password.trim()) {
+      Alert.alert('Invalid Input', 'Please enter both email and password.');
+      return;
+    }
     console.log('Sign in:', { email, password });
     router.replace('/home');
   };
