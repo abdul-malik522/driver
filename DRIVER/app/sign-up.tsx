@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
+  Alert,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import colors from './constraints/colors';
@@ -23,8 +24,12 @@ export default function SignUpScreen() {
   const [password, setPassword] = useState('');
 
   const handleSignUp = () => {
+    if (!name.trim() || !email.trim() || !phone.trim() || !truckId.trim() || !password.trim()) {
+      Alert.alert('Invalid Input', 'Please fill out all fields.');
+      return;
+    }
     console.log('Sign up:', { name, email, phone, truckId, password });
-    router.replace('/home');
+    router.replace({ pathname: '/tabs/home' } as any);
   };
 
   return (
@@ -119,7 +124,7 @@ export default function SignUpScreen() {
             <Text style={styles.signUpButtonText}>Sign Up</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => router.push('/sign-in')}>
+          <TouchableOpacity onPress={() => router.push({ pathname: '/sign-in' } as any)}>
             <Text style={styles.signInText}>
               Already have an account? <Text style={styles.signInLink}>Sign In</Text>
             </Text>
