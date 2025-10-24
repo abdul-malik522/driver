@@ -2,20 +2,24 @@ import React from 'react';
 import { render, fireEvent, waitFor } from '@testing-library/react-native';
 import SignInScreen from '../sign-in';
 import { Alert } from 'react-native';
-import { router } from 'expo-router';
+import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-jest.mock('expo-router', () => ({
-  router: {
-    replace: jest.fn(),
-  },
-}));
+jest.mock('@react-navigation/native', () => {
+  const actualNav = jest.requireActual('@react-navigation/native');
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      navigate: jest.fn(),
+    }),
+  };
+});
 
 jest.spyOn(Alert, 'alert');
 
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-
 describe('SignInScreen', () => {
   it('should show an alert if sign-in is attempted with empty fields', async () => {
+    const onLogin = jest.fn();
     const { getByTestId } = render(
       <SafeAreaProvider
         initialMetrics={{
@@ -23,7 +27,9 @@ describe('SignInScreen', () => {
           insets: { top: 0, left: 0, right: 0, bottom: 0 },
         }}
       >
-        <SignInScreen />
+        <NavigationContainer>
+          <SignInScreen onLogin={onLogin} />
+        </NavigationContainer>
       </SafeAreaProvider>
     );
 
@@ -31,7 +37,7 @@ describe('SignInScreen', () => {
 
     await waitFor(() => {
       expect(Alert.alert).toHaveBeenCalledWith('Invalid Input', 'Please enter both email and password.');
-      expect(router.replace).not.toHaveBeenCalled();
+      expect(onLogin).not.toHaveBeenCalled();
     });
   });
 });

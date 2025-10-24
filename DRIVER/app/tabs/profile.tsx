@@ -2,10 +2,11 @@
 import { ChevronRight, Edit } from 'lucide-react-native';
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import { router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import colors from '../constraints/colors';
 
 export default function ProfileScreen() {
+  const navigation = useNavigation();
   const renderProfileField = (label: string, value: string, onPress?: () => void) => (
     <TouchableOpacity
       style={styles.fieldContainer}
@@ -66,14 +67,14 @@ export default function ProfileScreen() {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Subscription</Text>
-        {renderMenuItem('Subscription', () => router.push('/subscription'))}
-        {renderMenuItem('Payment Methods', () => router.push('/subscription'))}
+        {renderMenuItem('Subscription', () => navigation.navigate('Subscription'))}
+        {renderMenuItem('Payment Methods', () => navigation.navigate('Subscription'))}
       </View>
 
       <TouchableOpacity
         style={styles.upgradeButton}
         testID="upgrade-button"
-        onPress={() => router.push('/subscription')}
+        onPress={() => navigation.navigate('Subscription')}
       >
         <Text style={styles.upgradeButtonText}>Upgrade</Text>
       </TouchableOpacity>
