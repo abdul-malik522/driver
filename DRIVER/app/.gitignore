@@ -1,3 +1,4 @@
 node_modules
 .expo/
 npm_output.log
+dist/
