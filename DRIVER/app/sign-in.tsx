@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import {
   View,
@@ -14,10 +14,11 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import colors from './constraints/colors';
 
-export default function SignInScreen() {
+export default function SignInScreen({ onLogin }: { onLogin: () => void }) {
   const insets = useSafeAreaInsets();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation();
 
   const handleSignIn = () => {
     if (!email.trim() || !password.trim()) {
@@ -25,7 +26,7 @@ export default function SignInScreen() {
       return;
     }
     console.log('Sign in:', { email, password });
-    router.replace('/home');
+    onLogin();
   };
 
   return (
@@ -69,7 +70,7 @@ export default function SignInScreen() {
             <Text style={styles.signInButtonText}>Sign In</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => console.log('OTP sign in')}>
+          <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
             <Text style={styles.otpText}>Or sign in with OTP</Text>
           </TouchableOpacity>
         </View>

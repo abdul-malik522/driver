@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { Truck, Plus } from 'lucide-react-native';
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
@@ -10,6 +10,7 @@ type FilterType = 'day' | 'week';
 
 export default function HomeScreen() {
   const [filter, setFilter] = useState<FilterType>('day');
+  const navigation = useNavigation();
 
   const filteredOrders = mockOrders.filter(() => true);
 
@@ -39,7 +40,7 @@ export default function HomeScreen() {
         <Text style={styles.title}>Orders</Text>
         <TouchableOpacity
           style={styles.addButton}
-          onPress={() => router.push('/new-order')}
+          onPress={() => navigation.navigate('NewOrder')}
           testID="add-order-button"
         >
           <Plus color={colors.dark.text} size={24} />

@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { ChevronLeft } from 'lucide-react-native';
 import React, { useState } from 'react';
 import {
@@ -15,13 +15,14 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import colors from './constraints/colors';
 
-export default function SignUpScreen() {
+export default function SignUpScreen({ onLogin }: { onLogin: () => void }) {
   const insets = useSafeAreaInsets();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [truckId, setTruckId] = useState('');
   const [password, setPassword] = useState('');
+  const navigation = useNavigation();
 
   const handleSignUp = () => {
     if (!name.trim() || !email.trim() || !phone.trim() || !truckId.trim() || !password.trim()) {
@@ -29,7 +30,7 @@ export default function SignUpScreen() {
       return;
     }
     console.log('Sign up:', { name, email, phone, truckId, password });
-    router.replace({ pathname: '/tabs/home' } as any);
+    onLogin();
   };
 
   return (
@@ -43,7 +44,7 @@ export default function SignUpScreen() {
       >
         <TouchableOpacity
           style={styles.backButton}
-          onPress={() => router.back()}
+          onPress={() => navigation.goBack()}
           testID="back-button"
         >
           <ChevronLeft color={colors.dark.text} size={24} />
@@ -124,7 +125,7 @@ export default function SignUpScreen() {
             <Text style={styles.signUpButtonText}>Sign Up</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => router.push({ pathname: '/sign-in' } as any)}>
+          <TouchableOpacity onPress={() => navigation.navigate('SignIn')}>
             <Text style={styles.signInText}>
               Already have an account? <Text style={styles.signInLink}>Sign In</Text>
             </Text>
